@@ -172,7 +172,7 @@ client2.on('message', function(message) {
                           });                         
 
                         }else{
-                          message.reply("[Error]:" + " You adempted to send to a user with no wallet, please get that user to type !wallet help" );                          
+                          message.reply("[Error]:" + " You attempted to send coins to a user with no wallet, please get that user to type `!wallet help`" );                          
                         }
                       });
 
