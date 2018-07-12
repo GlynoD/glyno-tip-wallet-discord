@@ -1,4 +1,4 @@
-# 🤖🤖Renos-Discord-TIPBot🤖🤖
+# 🤖🤖Glyno-Discord-TIPBot🤖🤖
 
 ## !wallet
 !wallet help
