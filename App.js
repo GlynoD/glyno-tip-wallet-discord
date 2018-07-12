@@ -128,7 +128,7 @@ client2.on('message', function(message) {
                         console.log("HERE: ")
                         console.log(name)
                         if(name ==[]){
-                          message.reply("[Error]:" + " You adempted to send to a user with no wallet, please get that user to type !wallet help" );
+                          message.reply("[Error]:" + " You attempted to send coins to a user with no wallet, please get that user to type `!wallet help` or `!wallet address`" );
                           return;
                         }
                         if(!error){
