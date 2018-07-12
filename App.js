@@ -42,13 +42,13 @@ var client = new coind.Client({
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 client2.on('ready', () => {
-  console.log('robotbot - Connected to Discord Server....');
+  console.log('Glyno - Connected to Discord Server....');
 });  
 
 //test RPC altcoin
 client.cmd('getbalance', function(error, output) { 
   if (!error){
-     console.log("RPC is setup correctly, your good to go...");
+     console.log("RPC is setup properly - Launching...");
     return
   }else{
     console.log("Please correct RPC connection details in config.js");
@@ -60,16 +60,17 @@ client.cmd('getbalance', function(error, output) {
 client2.on('message', function(message) {
 
       try{
-               
+          let helpMsg = "📚 Help: \n 💁 Tip some coins to a user! \n ```!tip @user <amount>\nExamples:\n !tip @KissOfFate#2788 100\n!tip 211492100485808130 100```";
+
           if (message.content.split(" ")[0] === '!tip') {
             //!tip <userid> amount
 
             if(message.content.split(" ")[1] == "help"){
-              message.reply("📚 Help: \n 💁 Sends some coin to a user based on there user ID, tip them... cmon spread that 💖..\n ```!tip @user <amount>\nie: !tip 211492100485808130 100\n how to get USR ID: Shift + Click Name```");
+              message.reply(helpMsg);
               return;
             }
             if(message.content.split(" ")[1] == undefined || message.content.split(" ")[2] == undefined){
-              message.reply("🛑Error: \n ```Check your your syntax, something is wrong...\n ```!tip <user ID> <amount>\nie: !tip @console 100\n how to get USR ID: Shift + Click Name```");
+              message.reply(helpMsg);
               return;
               //message.reply("Info to come...");
             }
@@ -77,13 +78,13 @@ client2.on('message', function(message) {
             if(!Number.isInteger(payAmount)){
               payAmount = parseInt(message.content.split(" ")[3]);
               if(!Number.isInteger(payAmount)){
-                message.reply("🛑Error: \n ```Check your your syntax, \n ```!tip <user ID> <amount>\nie: !tip @console 100\n how to get USER ID: Shift + Click Name```");
+                message.reply(helpMsg);
                 return;
               }
             }
             
             if(!Number.isInteger(payAmount)){
-              message.reply("🛑Error: \n ```Check your your syntax, \n ```!tip <user ID> <amount>\nie: !tip @console 100\n how to get USER ID: Shift + Click Name```");
+              message.reply(helpMsg);
               return;
             }
 
@@ -117,7 +118,7 @@ client2.on('message', function(message) {
                 client.cmd('getbalance', id, function(error, balance) { 
                   if (!error){
                     if(amount == 0){
-                      message.reply("[🛑Error] You cant send 0, dont be silly ...]");
+                      message.reply("[Error]: You cannot send 0 coins!");
                       return;
                     }
                     if(balance >= amount){
@@ -127,7 +128,7 @@ client2.on('message', function(message) {
                         console.log("HERE: ")
                         console.log(name)
                         if(name ==[]){
-                          message.reply("[Error]" + "You adempted to send to a user with no wallet, please get that user to type !wallet help" );
+                          message.reply("[Error]:" + " You adempted to send to a user with no wallet, please get that user to type !wallet help" );
                           return;
                         }
                         if(!error){
@@ -138,14 +139,13 @@ client2.on('message', function(message) {
                             if(!error){
 
                               const embed = new Discord.RichEmbed()
-                              .setTitle(message.author.username + " is SENDING a TIP")
                               .setAuthor(message.author.username, message.author.avatarURL)
                               /*
                                * Alternatively, use "#00AE86", [0, 174, 134] or an integer number.
                                */
                               .setColor(0x00AE86)
-                              .setDescription(message.author + " has sent you a tip, of " + amount + " <@"+toId+"> "  +". He must think something you have done was really cool, dont spent it all in one place !!")
-                              .setFooter("Congratulations wow !!", "http://www.untappedpotentialltd.co.uk/wp-content/uploads/2015/11/Tip.jpg")
+                              .setDescription(message.author + " has sent " + " <@"+toId+">" + " a tip of " + amount + " GLYNO.")
+                              .setFooter("Glyno Tip", "http://www.untappedpotentialltd.co.uk/wp-content/uploads/2015/11/Tip.jpg")
                               .setImage("https://www.123rf.com/stock-photo/congratulations.html")
                               .setThumbnail("https://www.movinglabor.com/images/blog/tip-jar.png")
                               /*
@@ -172,18 +172,18 @@ client2.on('message', function(message) {
                           });                         
 
                         }else{
-                          message.reply("[Error]" + "You adempted to send to a user with no wallet, please get that user to type !wallet help" );                          
+                          message.reply("[Error]:" + " You adempted to send to a user with no wallet, please get that user to type !wallet help" );                          
                         }
                       });
 
                       //message.reply("[💰Sending] You have enough coin... ]");
                       //message.reply("<@"+toId+"> " + message.author.username + " just sent you a 🎇TIP🎇 !!");
                     }else{
-                      message.reply("[🛑Error] You dont have enough coin ...]");                      
+                      message.reply("[Error]: You dont have enough coins to tip!");                      
                     }
                     return;
                   }else{
-                    message.reply("🛑Error: \n ```Check your balance, you broke....");
+                    message.reply("[Error]: Please check your balance.");
                     return;
                   }
                 });
@@ -194,18 +194,20 @@ client2.on('message', function(message) {
           }
   
           if (message.content.split(" ")[0] === '!wallet') {
+
+              let helptxt = "[HELP]\n " +
+              "📚 Syntax: !wallet <COMMAND> \n " +
+              "📚 IE: !wallet deposit \n" +
+              "📚 Commands: \n" +
+              "```deposit (or address), balance, send, withdraw```";
+
             if(message.content.split(" ")[1] == undefined){
-              message.reply("🛑Error: \n ```Check your balance or check your syntax, something is wrong...```");
+              message.reply(helptxt);
               return;
               //message.reply("Info to come...");
             }
 
             if(message.content.split(" ")[1] == "help"){
-              var helptxt = "[HELP]\n " +
-              "📚 Syntax: !wallet <COMMAND> \n " +
-              "📚 IE: !wallet deposit \n" +
-              "📚 Commands: \n" +
-              "```deposit (or address), balance, send, withdraw```";
               message.reply(helptxt);
               return;
             }   
@@ -218,10 +220,10 @@ client2.on('message', function(message) {
                 if (!error){
                   console.log(address);
                   if(address[0] == null){
-                    message.reply("You are new here, please remember this is not 100% tested only store small amounts here you can risk...\n Generating new Deposit Adress...");
+                    message.reply("Please remember to only store small amounts here. Generating Deposit Address...");
                     client.cmd('getnewaddress', id, function(error, address) {  
                       if (!error){
-                         message.reply("💰👛 Address has been created, try !wallet address, or !wallet deposit");
+                         message.reply("💰👛 Address has been created, try `!wallet address`, or `!wallet deposit`");
                         return
                       }else{
                         console.log(error);
@@ -231,8 +233,7 @@ client2.on('message', function(message) {
                   }else{
                     console.log(error);
                   }
-                  message.reply("💰👛 Deposit Address: \n```" + address + "```");
-                  return
+                  return;
                 }else{
                   console.log(error);
                   return;
@@ -261,7 +262,7 @@ client2.on('message', function(message) {
               var from = message.author.id;
               //console.log(message.content.split(" "))
               if(amount == undefined || to == undefined){
-                message.reply("🛑Bad syntax try: \n ```!wallet send ATP9fJjefZjt5zadw6Zsu4znDsqH7nRX3K 10```");
+                message.reply("[Error]: Try: \n ```!wallet send <address> 10```");
                 return;
               }
               console.log(amount);
@@ -269,14 +270,13 @@ client2.on('message', function(message) {
               client.cmd('sendfrom', from, to, amount, function(error, tx) { 
                 if (!error){
                   if(tx[0] == undefined){
-                    message.reply("🛑Error: \n ```Check your balance or check your syntax, something is wrong with amount...```");
+                    message.reply("[Error]: \n Please check your syntax (`!wallet help`) or your balance (`!wallet balance`)!");
                   }
                   console.log(tx);
-                  message.reply("TX: ```"  + tx + "```");
-                  message.reply("https://chainz.cryptoid.info/rns/search.dws?q=" + tx);
+                  message.reply("TX ID: ```"  + tx + "```" + "\nhttp://explorer.glyno.org/tx/" + tx);
 
                 }else{
-                  message.reply("🛑Error: \n ```Check your balance or check your syntax, something is wrong...```");
+                    message.reply("[Error]: \n Please check your syntax (`!wallet help`) or your balance (`!wallet balance`)!");
                   console.log(error);
                 }
               });
