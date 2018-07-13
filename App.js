@@ -195,11 +195,11 @@ client2.on('message', function(message) {
   
           if (message.content.split(" ")[0] === '!wallet') {
 
-              let helptxt = "[HELP]\n " +
-              "📚 Syntax: !wallet <COMMAND> \n " +
-              "📚 IE: !wallet deposit \n" +
-              "📚 Commands: \n" +
-              "```deposit (or address), balance, send, withdraw```";
+              let helptxt = "📚 Help: \n" +
+              "📚 Syntax: `!wallet <subcommand>` \n " +
+              "📚 Example: `!wallet deposit`or `!wallet withdraw` \n" +
+              "📚 Sub-Commands: \n" +
+              "```deposit/address, balance, send, withdraw```";
 
             if(message.content.split(" ")[1] == undefined){
               message.reply(helptxt);
